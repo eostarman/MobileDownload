@@ -9,7 +9,7 @@ import Foundation
 
 
 /// Information about the retailer (customer) regarding the locations (back-stock or consumer facing) at the retailer (and lists used during order entry for on-premise accounts mainly)
-public class RetailerInfo {
+public class RetailerInfo : Codable {
     public var cusNid: Int = 0
 
     public init() { }
@@ -36,9 +36,13 @@ public class RetailerInfo {
     public func retailLocations(for itemNid: Int) -> [RetailerList] {
         retailLocations.filter { $0.containsItem(itemNid: itemNid) }
     }
+
+    public var allLocationsAndLists: [RetailerList] {
+        retailLocations + backstockLocations + productLists
+    }
 }
 
-public class RetailerList: Identifiable {
+public class RetailerList: Identifiable, Codable {
     public var id: Int { retailerListTypeNid }
 
     public var cusNid: Int = 0 // primary key is cusNid, retailerListTypeNid
@@ -124,7 +128,7 @@ public class RetailerList: Identifiable {
         return filteredSections
     }
 
-    public class Section: Identifiable {
+    public class Section: Identifiable, Codable {
         public var id: Int { sectionNumber }
 
         public var cusNid: Int = 0
@@ -179,7 +183,7 @@ public class RetailerList: Identifiable {
         }
     }
 
-    public class Item: Identifiable, ObservableObject {
+    public class Item: Identifiable, ObservableObject, Codable {
         public var id: Int { itemNid }
 
         public init() { }
@@ -200,7 +204,7 @@ public class RetailerList: Identifiable {
         }
     }
 
-    public class ItemNote {
+    public class ItemNote : Codable {
         public var cusNid: Int = 0 // primary key: (cusNid, itemNid)
         public var itemNid: Int = 0
         public var eraseWhenPostingToSQL: Bool = false // This is set in MobileUpload when the user wants to erase public an existing list type from a customer

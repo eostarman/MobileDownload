@@ -96,7 +96,7 @@ public final class CustomerRecord: Record, Codable {
     public var hasStrictCreditLimitEnforcement: Bool = false
     public var pendingOrderCreditBalance: MoneyWithoutCurrency?
     public var liquorLicenseTo: String = ""
-    public var retailerInfoBlob: String = ""
+    public var retailerInfo: RetailerInfo = RetailerInfo()
     public var useSecondaryContainerDeposits: Bool = false
     public var countHistoryBlob: String = ""
     public var vendorID: String = ""
