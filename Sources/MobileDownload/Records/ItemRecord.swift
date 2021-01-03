@@ -149,30 +149,15 @@ public final class ItemRecord: Record, Codable {
 }
 
 extension ItemRecord {
-    /// Decode the download "blob" of entries - "2,7;10,10" means if palletSizeNid==2, then qtyPerLayer=7; if palletSizeNid==10 then qtyPerLayer = 10
-    public static func getCasesPerLayerEntries(blob: String) -> [CasesPerLayer]? {
-        if blob.isEmpty {
-            return nil
-        }
-
-        var entries: [CasesPerLayer] = []
-        for entry in blob.components(separatedBy: ";") {
-            let pair = entry.components(separatedBy: ",")
-            if pair.count == 2, let palletSizeNid = Int(pair[0]), palletSizeNid > 0, let casesPerLayer = Int(pair[1]) {
-                entries.append(CasesPerLayer(palletSizeNid: palletSizeNid, casesPerLayer: casesPerLayer))
-            }
-        }
-
-        if entries.isEmpty {
-            return nil
-        }
-
-        return entries
-    }
 
     public struct CasesPerLayer: Codable {
         public let palletSizeNid: Int
         public let casesPerLayer: Int
+
+        public init(palletSizeNid: Int, casesPerLayer: Int) {
+            self.palletSizeNid = palletSizeNid
+            self.casesPerLayer = casesPerLayer
+        }
     }
 
     public enum eSellCategory {
