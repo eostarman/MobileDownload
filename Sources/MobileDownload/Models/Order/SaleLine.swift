@@ -15,12 +15,6 @@ public class SaleLine: Identifiable {
     public var qtyOrdered: Int
     public var price: Money?
 
-    public struct Discount {
-        let mixAndMatchPromo: MixAndMatchPromo
-        let promoItem: PromoItem
-        public let amountOff: Money
-    }
-
     public init(id: Int, itemNid: Int, qtyOrdered: Int, price: Money) {
         self.id = id
         self.itemNid = itemNid
@@ -32,14 +26,8 @@ public class SaleLine: Identifiable {
     public var discounts: [Discount] = []
 
     public func clearDiscounts() { discounts = [] }
-    public func addDiscount(mixAndMatchPromo: MixAndMatchPromo, promoItem: PromoItem) {
-        guard let price = price else { return }
-        let promoSection = mobileDownload.promoSections[promoItem.promoSectionNid]
-        let promoCode = mobileDownload.promoCodes[promoSection.promoCodeNid]
-        if let amountOff = promoItem.getUnitDisc(promoCode: promoCode, unitPrice: price, nbrPriceDecimals: 2) {
-            let discount = Discount(mixAndMatchPromo: mixAndMatchPromo, promoItem: promoItem, amountOff: amountOff)
-            discounts.append(discount)
-        }
+    public func addDiscount(discount: Discount) {
+        discounts.append(discount)
     }
 
     public func setBestDiscount() {

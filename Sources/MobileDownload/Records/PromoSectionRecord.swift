@@ -41,7 +41,7 @@ public final class PromoSectionRecord: Record, Codable {
     public var additionalFeePromo_IsTax: Bool = false
     public var isFeatured: Bool = false
 
-    func isActiveOnDate(_ date: Date) -> Bool {
+    public func isActiveOnDate(_ date: Date) -> Bool {
         date >= startDate && (endDate == nil || date <= endDate!)
     }
 

@@ -36,8 +36,8 @@ public final class PriceSheetRecord: Record, Codable {
     }
 
     public struct PriceLevel: Codable {
-        let priceLevel: Int
-        let canUseAutomaticColumns: Bool
+        public let priceLevel: Int
+        public let canUseAutomaticColumns: Bool
 
         public init(priceLevel: Int, canUseAutomaticColumns: Bool) {
             self.priceLevel = priceLevel
@@ -45,7 +45,7 @@ public final class PriceSheetRecord: Record, Codable {
         }
     }
 
-    func getPrices(priceLevel: Int) -> [Int: MoneyWithoutCurrency] {
+    public func getPrices(priceLevel: Int) -> [Int: MoneyWithoutCurrency] {
         var levelPrices: [Int: MoneyWithoutCurrency] = [:]
 
         for x in prices {
@@ -61,7 +61,7 @@ public final class PriceSheetRecord: Record, Codable {
     public var endDateIsSupercededDate: Bool = false
     public var isDepositSchedule: Bool = false
 
-    func isActive(on date: Date) -> Bool {
+    public func isActive(on date: Date) -> Bool {
         if date < startDate {
             return false
         }

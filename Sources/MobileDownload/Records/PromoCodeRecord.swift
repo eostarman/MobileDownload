@@ -19,7 +19,7 @@ public final class PromoCodeRecord: Record, Codable {
     public var promoTierSeq: Int = 0
     public var isTieredPromo: Bool = false
 
-    func isCustomerSelected(cusNid: Int) -> Bool {
+    public func isCustomerSelected(cusNid: Int) -> Bool {
         promoCustomers.contains(cusNid)
     }
 
