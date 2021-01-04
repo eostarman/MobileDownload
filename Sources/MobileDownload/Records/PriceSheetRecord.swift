@@ -9,17 +9,23 @@ public final class PriceSheetRecord: Record, Codable {
 
     public var priceBookNid: Int = 0
     public var startDate: Date = .distantPast
-    public var endDate: Date = .distantFuture
+    public var endDate: Date?
     public var perCategoryMinimums: Bool = false
     public var perItemMinimums: Bool = false
     public var perPriceSheetMinimums: Bool = false
+
+    public var endDateIsSupercededDate: Bool = false
+    public var isDepositSchedule: Bool = false
 
     public var columInfos: [Int: ColumnInfo] = [:]
 
     public var warehouses: [Int: PriceLevel] = [:]
     public var customers: [Int: PriceLevel] = [:]
 
-    public var prices: [Int: [Int: MoneyWithoutCurrency]] = [:]
+    public var prices: [Int: [Int: MoneyWithoutCurrency]] = [:] // prices[itemNid][column] -> price
+
+    public var priceBookName: String = ""
+    public var currency: Currency = .USD
 
     public init() { }
 
@@ -45,25 +51,28 @@ public final class PriceSheetRecord: Record, Codable {
         }
     }
 
-    public func getPrices(priceLevel: Int) -> [Int: MoneyWithoutCurrency] {
-        var levelPrices: [Int: MoneyWithoutCurrency] = [:]
-
-        for x in prices {
-            let itemNid = x.key
-            if let price = x.value[priceLevel] {
-                levelPrices[itemNid] = price
-            }
+    /// Set the price of an item in a price column. Note that the price sheet has an assigned currency, so this takes the price without the currency
+    public func setPrice(itemNid: Int, priceLevel: Int, price: MoneyWithoutCurrency) {
+        if var pricesByColumn = prices[itemNid] {
+            pricesByColumn[priceLevel] = price
+        } else {
+            var newColumnPrices: [Int: MoneyWithoutCurrency] = [:]
+            newColumnPrices[priceLevel] = price
+            prices[itemNid] = newColumnPrices
         }
-
-        return levelPrices
     }
 
-    public var endDateIsSupercededDate: Bool = false
-    public var isDepositSchedule: Bool = false
+    public func getPrice(itemNid: Int, priceLevel: Int) ->  Money? {
+        prices[itemNid]?[priceLevel]?.withCurrency(currency)
+    }
 
     public func isActive(on date: Date) -> Bool {
         if date < startDate {
             return false
+        }
+
+        guard let endDate = endDate else {
+            return true
         }
 
         if endDateIsSupercededDate {

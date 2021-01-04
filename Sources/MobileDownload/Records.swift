@@ -24,6 +24,7 @@ public final class Records<T: Record> {
         recordsByRecNid = Dictionary(uniqueKeysWithValues: records.map { ($0.recNid, $0) })
     }
 
+    @discardableResult
     public func add(_ record: T) -> T {
         recordsByRecNid[record.recNid] = record
 
