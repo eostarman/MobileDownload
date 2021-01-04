@@ -13,7 +13,7 @@ public final class CustomerRecord: Record, Codable {
     public var geographicAreaNid: Int?
     public var chainNid: Int?
     public var taxAreaNid: Int?
-    public var pricingParentNid: Int = 0
+    public var pricingParentNid: Int?
     public var whseNid: Int = 1
     public var holdCodeNid: Int?
     public var PaymentTermsNid: Int?

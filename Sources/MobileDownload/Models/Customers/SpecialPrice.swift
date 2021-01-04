@@ -18,6 +18,13 @@ public struct SpecialPrice: Codable {
 
     public init() { }
 
+    public init(itemNid: Int, price: MoneyWithoutCurrency, startDate: Date, endDate: Date?) {
+        self.startDate = startDate
+        self.endDate = endDate
+        self.itemNid = itemNid
+        self.price = price
+    }
+
     public func isPriceActive(date: Date) -> Bool {
         if date < startDate {
             return false

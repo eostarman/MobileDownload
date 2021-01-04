@@ -24,11 +24,13 @@ public final class Records<T: Record> {
         recordsByRecNid = Dictionary(uniqueKeysWithValues: records.map { ($0.recNid, $0) })
     }
 
-    public func add(record: T) {
+    public func add(_ record: T) -> T {
         recordsByRecNid[record.recNid] = record
 
         _allRecordsSorted = nil
         _recNidsByRecKey = nil
+
+        return record
     }
 
     public func getByRecKeyOrNil(_ recKey: String) -> T? {
