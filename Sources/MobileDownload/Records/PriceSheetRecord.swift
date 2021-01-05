@@ -10,9 +10,9 @@ public final class PriceSheetRecord: Record, Codable {
     public var priceBookNid: Int = 0
     public var startDate: Date = .distantPast
     public var endDate: Date?
-    public var perCategoryMinimums: Bool = false
-    public var perItemMinimums: Bool = false
-    public var perPriceSheetMinimums: Bool = false
+    //public var perCategoryMinimums: Bool = false
+    public var perItemMinimums: Bool = false            // the minimums are per-item or mix-and-match across all items in the price sheet
+    //public var perPriceSheetMinimums: Bool = false
 
     public var endDateIsSupercededDate: Bool = false
     public var isDepositSchedule: Bool = false
@@ -29,16 +29,30 @@ public final class PriceSheetRecord: Record, Codable {
 
     public init() { }
 
+    public func getAutomaticPriceLevels() -> [Int] {
+        columInfos.enumerated().filter { $0.element.value.isAutoColumn }.map { $0.element.key }
+    }
+
     public struct ColumnInfo: Codable {
-        public var columnNotes: String = ""
+
+        //public var columnNotes: String = ""   // mpr: not in use anywhere in eoTouch
         public var isAutoColumn: Bool = false
         public var columnMinimum: Int = 0
+
         public var isCaseMinimum: Bool = false
-        public var isMoneyMinimum: Bool = false
-        public var isWeightMinimum: Bool = false
-        public var basisIndex: Int = 0
+        //public var isWeightMinimum: Bool { !isCaseMinimum }
+
+        //public var isMoneyMinimum: Bool = false  // we stopped supporting "moneyMinimum" a long long time ago
+        //public var isWeightMinimum: Bool = false // now implicit if this isn't a minimum based on cases (the default)
+        //public var basisIndex: Int = 0           // not used in eoTouch (originally intended to handle things like board-feet ...)
 
         public init() { }
+
+        init(columnMinimum: Int, isCaseMinimum: Bool) {
+            isAutoColumn = true
+            self.columnMinimum = columnMinimum
+            self.isCaseMinimum = isCaseMinimum
+        }
     }
 
     public struct PriceLevel: Codable {
@@ -51,18 +65,11 @@ public final class PriceSheetRecord: Record, Codable {
         }
     }
 
-    /// Set the price of an item in a price column. Note that the price sheet has an assigned currency, so this takes the price without the currency
-    public func setPrice(itemNid: Int, priceLevel: Int, price: MoneyWithoutCurrency) {
-        if var pricesByColumn = prices[itemNid] {
-            pricesByColumn[priceLevel] = price
-        } else {
-            var newColumnPrices: [Int: MoneyWithoutCurrency] = [:]
-            newColumnPrices[priceLevel] = price
-            prices[itemNid] = newColumnPrices
-        }
+    public func containsItem(itemNid: Int) -> Bool {
+        prices[itemNid] != nil
     }
 
-    public func getPrice(itemNid: Int, priceLevel: Int) ->  Money? {
+    public func getPrice(itemNid: Int, priceLevel: Int) -> Money? {
         prices[itemNid]?[priceLevel]?.withCurrency(currency)
     }
 
@@ -86,5 +93,29 @@ public final class PriceSheetRecord: Record, Codable {
         }
 
         return true
+    }
+
+    //MARK routines for testing
+    public func setNonAutoColumn(priceLevel: Int) {
+        columInfos[priceLevel] = ColumnInfo()
+    }
+
+    public func setAutoColumnBasedOnMinimumCases(priceLevel: Int, minimumCases: Int) {
+        columInfos[priceLevel] = ColumnInfo(columnMinimum: minimumCases, isCaseMinimum: true)
+    }
+
+    public func setAutoColumnBasedOnMinimumWeight(pricelevel: Int, minimumWeight: Int) {
+        columInfos[pricelevel] = ColumnInfo(columnMinimum: minimumWeight, isCaseMinimum: false)
+    }
+
+    /// Set the price of an item in a price column. Note that the price sheet has an assigned currency, so this takes the price without the currency
+    public func setPrice(itemNid: Int, priceLevel: Int, price: MoneyWithoutCurrency) {
+        if var pricesByColumn = prices[itemNid] {
+            pricesByColumn[priceLevel] = price
+        } else {
+            var newColumnPrices: [Int: MoneyWithoutCurrency] = [:]
+            newColumnPrices[priceLevel] = price
+            prices[itemNid] = newColumnPrices
+        }
     }
 }
