@@ -19,8 +19,8 @@ public final class PriceSheetRecord: Record, Codable {
 
     public var columInfos: [Int: ColumnInfo] = [:]
 
-    public var warehouses: [Int: PriceLevel] = [:]
-    public var customers: [Int: PriceLevel] = [:]
+    public var warehouses: [Int: Level] = [:]
+    public var customers: [Int: Level] = [:]
 
     public var prices: [Int: [Int: MoneyWithoutCurrency]] = [:] // prices[itemNid][column] -> price
 
@@ -55,7 +55,7 @@ public final class PriceSheetRecord: Record, Codable {
         }
     }
 
-    public struct PriceLevel: Codable {
+    public struct Level: Codable {
         public let priceLevel: Int
         public let canUseAutomaticColumns: Bool
 
@@ -69,8 +69,8 @@ public final class PriceSheetRecord: Record, Codable {
         prices[itemNid] != nil
     }
 
-    public func getPrice(itemNid: Int, priceLevel: Int) -> Money? {
-        prices[itemNid]?[priceLevel]?.withCurrency(currency)
+    public func getPrice(_ item: ItemRecord, priceLevel: Int) -> Money? {
+        prices[item.recNid]?[priceLevel]?.withCurrency(currency)
     }
 
     public func isActive(on date: Date) -> Bool {
@@ -100,22 +100,37 @@ public final class PriceSheetRecord: Record, Codable {
         columInfos[priceLevel] = ColumnInfo()
     }
 
-    public func setAutoColumnBasedOnMinimumCases(priceLevel: Int, minimumCases: Int) {
+    public func setAutoColumn(priceLevel: Int, minimumCases: Int) {
         columInfos[priceLevel] = ColumnInfo(columnMinimum: minimumCases, isCaseMinimum: true)
     }
 
-    public func setAutoColumnBasedOnMinimumWeight(pricelevel: Int, minimumWeight: Int) {
+    public func setAutoColumn(pricelevel: Int, minimumWeight: Int) {
         columInfos[pricelevel] = ColumnInfo(columnMinimum: minimumWeight, isCaseMinimum: false)
     }
 
+    public func assignTo(_ customer: CustomerRecord, priceLevel: Int, canUseAutomaticColumns: Bool) {
+        customers[customer.recNid] = PriceSheetRecord.Level(priceLevel: priceLevel, canUseAutomaticColumns: canUseAutomaticColumns)
+    }
+
+    public func unassignFrom(_ customer: CustomerRecord) {
+        customers.removeValue(forKey: customer.recNid)
+    }
+
+    public func assignTo(_ warehouse: WarehouseRecord, priceLevel: Int, canUseAutomaticColumns: Bool) {
+        warehouses[warehouse.recNid] = PriceSheetRecord.Level(priceLevel: priceLevel, canUseAutomaticColumns: canUseAutomaticColumns)
+    }
+
+    public func unassignFrom(_ warehouse: WarehouseRecord) {
+        warehouses.removeValue(forKey: warehouse.recNid)
+    }
+
     /// Set the price of an item in a price column. Note that the price sheet has an assigned currency, so this takes the price without the currency
-    public func setPrice(itemNid: Int, priceLevel: Int, price: MoneyWithoutCurrency) {
-        if var pricesByColumn = prices[itemNid] {
-            pricesByColumn[priceLevel] = price
-        } else {
-            var newColumnPrices: [Int: MoneyWithoutCurrency] = [:]
-            newColumnPrices[priceLevel] = price
-            prices[itemNid] = newColumnPrices
+    public func setPrice(_ item: ItemRecord, priceLevel: Int, price: MoneyWithoutCurrency) {
+        let itemNid = item.recNid
+
+        if prices[itemNid] == nil {
+            prices[itemNid] = [:]
         }
+        prices[itemNid]![priceLevel] = price
     }
 }
