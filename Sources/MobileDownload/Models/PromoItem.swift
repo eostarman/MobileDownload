@@ -8,7 +8,7 @@
 import Foundation
 import MoneyAndExchangeRates
 
-public struct PromoItem: Codable {
+public class PromoItem: Codable {
     public enum ePromoRateType: Int, Codable {
         case amountOff = 0
         case percentOff = 1
@@ -32,6 +32,42 @@ public struct PromoItem: Codable {
         case .amountOff: return promoRate != 0
         case .percentOff: return promoRate != 0
         case .promoPrice: return true
+        }
+    }
+    
+    /// Create a promo item that provides a percent-off discount (a 3.5% discount is entered as 3.5, not .035)
+    public init(_ item: ItemRecord, percentOff: Double, triggerGroup: Int? = nil) {
+        self.itemNid = item.recNid
+        self.promoRate = Int(10000 * percentOff)
+        self.promoRateType = .percentOff
+        
+        if let triggerGroup = triggerGroup {
+            self.isExplicitTriggerItem = true
+            self.triggerGroup = triggerGroup
+        }
+    }
+    
+    /// Create a promo item with an amount off such as $.75 off - the currency is taken from the promoCode
+    public init(_ item: ItemRecord, amountOff: MoneyWithoutCurrency, triggerGroup: Int? = nil) {
+        self.itemNid = item.recNid
+        self.promoRate = Int(amountOff.scaledTo(numberOfDecimals: 4).scaledAmount)
+        self.promoRateType = .amountOff
+        
+        if let triggerGroup = triggerGroup {
+            self.isExplicitTriggerItem = true
+            self.triggerGroup = triggerGroup
+        }
+    }
+    
+    /// Create a promo item that provides a specific price - e.g. the item has a promoted price of $8.54 - the currency is taken from the promoCode
+    public init(_ item: ItemRecord, promotedPrice: MoneyWithoutCurrency, triggerGroup: Int? = nil) {
+        self.itemNid = item.recNid
+        self.promoRate = Int(promotedPrice.scaledTo(numberOfDecimals: 4).scaledAmount)
+        self.promoRateType = .promoPrice
+        
+        if let triggerGroup = triggerGroup {
+            self.isExplicitTriggerItem = true
+            self.triggerGroup = triggerGroup
         }
     }
 

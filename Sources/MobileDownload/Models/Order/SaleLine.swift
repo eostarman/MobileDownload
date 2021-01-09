@@ -13,24 +13,45 @@ public class SaleLine: Identifiable {
     public let id: Int
     public var itemNid: Int
     public var qtyOrdered: Int
-    public var price: Money?
+    public var unitPrice: Money?
+    public var unitDisc: Money?
+    public var bestDiscountWithReason: DiscountWithReason?
+    public var discountsWithReasons: [DiscountWithReason] = []
 
-    public init(id: Int, itemNid: Int, qtyOrdered: Int, price: Money) {
+    public init(id: Int, itemNid: Int, qtyOrdered: Int, unitPrice: Money) {
         self.id = id
         self.itemNid = itemNid
         self.qtyOrdered = qtyOrdered
-        self.price = price
+        self.unitPrice = unitPrice
     }
 
-    public var bestDiscount: Discount?
-    public var discounts: [Discount] = []
-
-    public func clearDiscounts() { discounts = [] }
-    public func addDiscount(discount: Discount) {
-        discounts.append(discount)
+    public func clearDiscounts() {
+        discountsWithReasons = []
+        bestDiscountWithReason = nil
+        unitDisc = nil
+    }
+    
+    public func addDiscount(discount: DiscountWithReason) {
+        discountsWithReasons.append(discount)
     }
 
     public func setBestDiscount() {
-        bestDiscount = discounts.first // not really - just a stub
+        bestDiscountWithReason = nil
+        unitDisc = nil
+        
+        guard let currency = unitPrice?.currency else {
+            return
+        }
+        
+        for discountWithReason in discountsWithReasons {
+            guard let amountOffInProperCurrency = mobileDownload.exchange(discountWithReason.amountOff, to: currency) else {
+                continue
+            }
+            
+            if unitDisc == nil || amountOffInProperCurrency > unitDisc! {
+                bestDiscountWithReason = discountWithReason
+                unitDisc = amountOffInProperCurrency
+            }
+        }
     }
 }

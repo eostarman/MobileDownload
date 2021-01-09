@@ -99,7 +99,7 @@ public final class HandheldRecord: Record, Codable {
     public var serviceRequireSystemField: Bool = false
     public var serviceRequireSubsystemField: Bool = false
     public var defaultCurrencyNid: Int?
-    public var exchangeRates = ExchangeRates()
+    public var exchangeRates = ExchangeRatesService()
 
     public var routeType: eRouteType = .Regular
 

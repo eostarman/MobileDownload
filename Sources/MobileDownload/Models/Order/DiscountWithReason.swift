@@ -8,7 +8,7 @@
 import Foundation
 import MoneyAndExchangeRates
 
-public struct Discount {
+public struct DiscountWithReason {
     public let promoItem: PromoItem
     public let amountOff: Money
 
