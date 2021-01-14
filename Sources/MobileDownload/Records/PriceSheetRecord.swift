@@ -64,6 +64,10 @@ public final class PriceSheetRecord: Record, Codable {
             self.canUseAutomaticColumns = canUseAutomaticColumns
         }
     }
+    
+    public var itemNids: Set<Int> {
+        Set(prices.keys)
+    }
 
     public func containsItem(itemNid: Int) -> Bool {
         prices[itemNid] != nil

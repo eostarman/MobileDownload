@@ -70,6 +70,10 @@ public class PromoItem: Codable {
             self.triggerGroup = triggerGroup
         }
     }
+    
+    public var is100PercentOff: Bool {
+        promoRate == 100_0000
+    }
 
     public func getPercentOff() -> Double {
         Double(promoRate) / 10000 // 4 decimal percentage - return 3.5% as 3.5000

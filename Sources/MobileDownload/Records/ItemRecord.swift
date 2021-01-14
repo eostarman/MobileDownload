@@ -55,7 +55,8 @@ public final class ItemRecord: Record, Codable {
     public var isLiquor: Bool = false
     public var activeFlag: Bool = false
     public var billingCodeIsForCustomerWeb: Bool = false
-
+    
+    /// These are the alt-packs that identify this item as their altPackFamilyNid (so, it's non-empty only for a primary pack). It doesn't include this item's recNid - the the alt-packs
     public var altPackNids: [Int] = []
     public var altPackFamilyNid: Int = 0
 
@@ -214,4 +215,15 @@ extension ItemRecord {
     public func isBeerOrCraftBeer() -> Bool { getSellCategory() == eSellCategory.IsBeer || getSellCategory() == eSellCategory.IsCraftBeer }
     public func isPrimaryPack() -> Bool { altPackFamilyNid == recNid }
     public func isAltPack() -> Bool { altPackFamilyNid != recNid }
+    
+    
+    /// One of these will represent (x) of the primary pack. If this is the primary pack then it's one; if this is a pallet of 10, then one of these is 10 of the primary pack. If the primary pack contains 4 of these, then
+    /// one of these is .25 primary packs
+    public var numberOfPrimaryPacks: Double {
+        if altPackFamilyNid == recNid {
+            return 1
+        } else {
+            return altPackIsFractionOfPrimaryPack ? 1.0 / Double(altPackCasecount) : Double(altPackCasecount)
+        }
+    }
 }

@@ -44,6 +44,26 @@ public final class PromoSectionRecord: Record, Codable {
     public func isActiveOnDate(_ date: Date) -> Bool {
         date >= startDate && (endDate == nil || date <= endDate!)
     }
+    
+    public func isAvailableOnWeekday(_ date: Date) -> Bool {
+        if !isDayOfWeekPromo {
+            return true
+        }
+        
+        let weekday = Calendar.current.component(.weekday, from: date) // 1=Sunday
+        
+        switch weekday {
+        case 1: return sundayPromo
+        case 2: return mondayPromo
+        case 3: return tuesdayPromo
+        case 4: return wednesdayPromo
+        case 5: return thursdayPromo
+        case 6: return fridayPromo
+        case 7: return saturdayPromo
+        default:
+            return false
+        }
+    }
 
     public init() {}
 }
