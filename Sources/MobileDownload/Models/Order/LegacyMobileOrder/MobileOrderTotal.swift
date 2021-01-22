@@ -6,21 +6,22 @@
 //
 
 import Foundation
+import MoneyAndExchangeRates
 
 public struct MobileOrderTotal {
-    public var totalFrontlinePrice: Decimal = 0
-    public var totalDiscount: Decimal = 0
-    public var totalDeposit: Decimal = 0
+    public var totalFrontlinePrice: MoneyWithoutCurrency = .zero
+    public var totalDiscount: MoneyWithoutCurrency = .zero
+    public var totalDeposit: MoneyWithoutCurrency = .zero
 
-    public var totalDue: Decimal {
+    public var totalDue: MoneyWithoutCurrency {
         totalFrontlinePrice - totalDiscount + totalDeposit
     }
 
     init(_ lines: [MobileOrderLineTotal]) {
         for line in lines {
-            totalFrontlinePrice += line.totalFrontlinePrice ?? 0
-            totalDiscount += line.totalDiscount ?? 0
-            totalDeposit += line.totalDeposit ?? 0
+            totalFrontlinePrice += line.totalFrontlinePrice
+            totalDiscount += line.totalDiscount
+            totalDeposit += line.totalDeposit
         }
     }
 }

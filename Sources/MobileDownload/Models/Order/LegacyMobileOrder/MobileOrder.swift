@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import MoneyAndExchangeRates
 
 // the "legacy" MobileOrder transmitted from eoStar (as a "delivery to be delivered")
 public class MobileOrder: Identifiable, Codable {
@@ -19,20 +20,20 @@ public class MobileOrder: Identifiable, Codable {
     public var trkNid: Int?
     public var toCusNid: Int = 0
 
-    public var isFromDistributor: Bool?
-    public var isToDistributor: Bool?
+    public var isFromDistributor: Bool = false
+    public var isToDistributor: Bool = false
     public var deliveryChargeNid: Int?
-    public var isAutoDeliveryCharge: Bool?
-    public var isEarlyPay: Bool?
-    public var earlyPayDiscountAmt: Decimal?
+    public var isAutoDeliveryCharge: Bool = true
+    public var isEarlyPay: Bool = false
+    public var earlyPayDiscountAmt: MoneyWithoutCurrency = .zero
     public var termDiscountDays: Int?
     public var termDiscountPct: Int?
-    public var heldStatus: Bool?
-    public var isVoided: Bool?
-    public var deliveredStatus: Bool?
+    public var heldStatus: Bool = false
+    public var isVoided: Bool = false
+    public var deliveredStatus: Bool = false
     public var orderType: eOrderType?
-    public var isNewOrder: Bool?
-    public var isHotShot: Bool?
+    public var isNewOrder: Bool = false
+    public var isHotShot: Bool = false
     public var numberSummarized: Int?
     public var summaryOrderNumber: Int?
     public var coopTicketNumber: Int?
@@ -41,13 +42,13 @@ public class MobileOrder: Identifiable, Codable {
     public var shipCity: String?
     public var shipState: String?
     public var shipZip: String?
-    public var doNotChargeUnitFreight: Bool?
-    public var doNotChargeUnitDeliveryCharge: Bool?
-    public var ignoreDeliveryTruckRestrictions: Bool?
+    public var doNotChargeUnitFreight: Bool = false
+    public var doNotChargeUnitDeliveryCharge: Bool = false
+    public var ignoreDeliveryTruckRestrictions: Bool = false
     public var signatureVectors: String?
     public var driverSignatureVectors: String?
-    public var isOffScheduleDelivery: Bool?
-    public var isSpecialPaymentTerms: Bool?
+    public var isOffScheduleDelivery: Bool = false
+    public var isSpecialPaymentTerms: Bool = false
     public var promoDate: Date?
 
     public var authenticatedByNid: Int?
@@ -87,30 +88,30 @@ public class MobileOrder: Identifiable, Codable {
 
     public var loadNumber: Int?
     public var toEquipNid: Int?
-    public var isVendingReplenishment: Bool?
+    public var isVendingReplenishment: Bool = false
     public var replenishmentVendTicketNumber: Int?
-    public var isCoopDeliveryPoint: Bool?
+    public var isCoopDeliveryPoint: Bool = false
     public var coopCusNid: Int?
-    public var doNotOptimizePalletsWithLayerRounding: Bool?
-    public var returnsValidated: Bool?
-    public var POAAmount: Decimal?
-    public var POAExpected: Decimal?
-    public var includeChargeOrderInTotalDue: Bool?
+    public var doNotOptimizePalletsWithLayerRounding: Bool = false
+    public var returnsValidated: Bool = false
+    public var POAAmount: MoneyWithoutCurrency = .zero
+    public var POAExpected: MoneyWithoutCurrency = .zero
+    public var includeChargeOrderInTotalDue: Bool = false
     public var deliverySequence: Int?
     public var orderDEXStatus: eOrderDEXStatus?
-    public var isForPlanogramReset: Bool?
-    public var manualHold: Bool?
+    public var isForPlanogramReset: Bool = false
+    public var manualHold: Bool = false
     public var pushOffDate: Date?
     public var drvEmpNid: Int?
     public var slsEmpNid: Int?
     public var orderTypeNid: Int?
-    public var isBillAndHold: Bool?
+    public var isBillAndHold: Bool = false
     public var paymentTermsNid: Int?
-    public var isBulkOrder: Bool?
-    public var isCharge: Bool?
-    public var isTaxable: Bool?
-    public var usedCombinedForm: Bool?
-    public var isEft: Bool?
+    public var isBulkOrder: Bool = false
+    public var isCharge: Bool = false
+    public var isTaxable: Bool = false
+    public var usedCombinedForm: Bool = false
+    public var isEft: Bool = false
     public var poNumber: String?
     public var takenFrom: String?
     public var invoiceNote: String?
@@ -121,29 +122,29 @@ public class MobileOrder: Identifiable, Codable {
     public var skipReason: String?
     public var voidReason: String?
     public var offInvoiceDiscPct: Int?
-    public var discountAmt: Decimal?
-    public var totalFreight: Decimal?
-    public var isExistingOrder: Bool?
-    public var printedReviewInvoice: Bool?
+    public var discountAmt: MoneyWithoutCurrency = .zero
+    public var totalFreight: MoneyWithoutCurrency = .zero
+    public var isExistingOrder: Bool = false
+    public var printedReviewInvoice: Bool = false
     public var voidReasonNid: Int?
-    public var isPresell: Bool?
+    public var isPresell: Bool = false
     public var entryTime: Date?
-    public var deliveredByHandheld: Bool?
-    public var isOffTruck: Bool?
-    public var isFromBlobbing: Bool?
+    public var deliveredByHandheld: Bool = false
+    public var isOffTruck: Bool = false
+    public var isFromBlobbing: Bool = false
     public var orderNumbersForPartitioner: [Int] = []
     public var deliveryInfos: [DeliveryInfoForPartitioning] = []
 
-    public var salesTax: Decimal?
-    public var salesTaxState: Decimal?
-    public var salesTaxStateB: Decimal?
-    public var salesTaxStateC: Decimal?
-    public var salesTaxCounty: Decimal?
-    public var salesTaxCity: Decimal?
-    public var salesTaxLocal: Decimal?
-    public var salesTaxWholesale: Decimal?
-    public var VAT: Decimal?
-    public var levy: Decimal?
+    public var salesTax: MoneyWithoutCurrency = .zero
+    public var salesTaxState: MoneyWithoutCurrency = .zero
+    public var salesTaxStateB: MoneyWithoutCurrency = .zero
+    public var salesTaxStateC: MoneyWithoutCurrency = .zero
+    public var salesTaxCounty: MoneyWithoutCurrency = .zero
+    public var salesTaxCity: MoneyWithoutCurrency = .zero
+    public var salesTaxLocal: MoneyWithoutCurrency = .zero
+    public var salesTaxWholesale: MoneyWithoutCurrency = .zero
+    public var VAT: MoneyWithoutCurrency = .zero
+    public var levy: MoneyWithoutCurrency = .zero
 
     public var lines: [MobileOrderLine] = []
 }
