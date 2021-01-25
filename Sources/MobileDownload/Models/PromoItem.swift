@@ -22,7 +22,7 @@ public class PromoItem: Codable {
     public var triggerGroup: Int = 0
     public var promoRateType: ePromoRateType = .promoPrice
     public var promoRate: Int = 0
-    public var unitRebate: MoneyWithoutCurrency = .zero //TODO
+    public var unitRebate: MoneyWithoutCurrency = .zero // this is not downloaded as part of the MobileDownload
     public var fromDateOverride: Date?
     public var thruDateOverride: Date?
 
