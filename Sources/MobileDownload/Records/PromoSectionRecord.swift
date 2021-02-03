@@ -117,9 +117,18 @@ extension PromoSectionRecord {
         itemsAndNote.decodeIfNecessary(recNid: recNid)
         return itemsAndNote.promoItems
     }
+    
+    public func setPromoItems(_ promoItems: PromoItem ...) {
+        itemsAndNote.decodeIfNecessary(recNid: recNid)
+        itemsAndNote.promoItems = promoItems
+    }
 
     public func setPromoItems(_ promoItems: [PromoItem]) {
         itemsAndNote.decodeIfNecessary(recNid: recNid)
         itemsAndNote.promoItems = promoItems
+        
+        for promoItem in promoItems {
+            promoItem.promoSectionNid = recNid
+        }
     }
 }

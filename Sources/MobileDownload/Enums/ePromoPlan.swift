@@ -13,4 +13,13 @@ public enum ePromoPlan: Int, Codable {
     case CTMOffInvoice = 7
     case AdditionalFee = 8
     case OffInvoiceAccrual = 9
+    
+    public var isCokePromo: Bool {
+        switch self {
+        case .CMAOnInvoice, .CTMOnInvoice, .CCFOnInvoice:
+            return true
+        default:
+            return false
+        }
+    }
 }
