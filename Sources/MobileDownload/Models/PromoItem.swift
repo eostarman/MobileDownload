@@ -36,6 +36,18 @@ public class PromoItem: Codable {
         }
     }
     
+    public func isActive(on promoDate: Date) -> Bool {
+        if let fromDate = fromDateOverride, promoDate < fromDate {
+            return false
+        }
+        
+        if let thruDate = thruDateOverride, promoDate > thruDate {
+            return false
+        }
+        
+        return true
+    }
+    
     /// Create a promo item that provides a percent-off discount (a 3.5% discount is entered as 3.5, not .035)
     public init(_ item: ItemRecord, percentOff: Double, triggerGroup: Int? = nil) {
         self.itemNid = item.recNid
