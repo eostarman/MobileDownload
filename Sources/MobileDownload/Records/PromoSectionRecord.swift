@@ -40,6 +40,10 @@ public final class PromoSectionRecord: Record, Codable {
     public var isProratedAmount: Bool = false
     public var additionalFeePromo_IsTax: Bool = false
     public var isFeatured: Bool = false
+    
+    public var isTax: Bool {
+        promoPlan == .AdditionalFee && additionalFeePromo_IsTax
+    }
 
     public func isActiveOnDate(_ date: Date) -> Bool {
         date >= startDate && (endDate == nil || date <= endDate!)
@@ -119,17 +123,17 @@ extension PromoSectionRecord {
         
         public func getPromoItem(promoSectionRecNid: Int, promoDate: Date, itemNid: Int) -> PromoItem? {
             decodeIfNecessary(promoSectionRecNid)
-            cachePromoItems(promoDate: promoDate)
+            cacheIfNecessary(promoDate: promoDate)
             return cachedPromoItemsByItemNid[itemNid]
         }
         
         public func getPromoItems(promoSectionRecNid: Int, promoDate: Date) -> [PromoItem] {
             decodeIfNecessary(promoSectionRecNid)
-            cachePromoItems(promoDate: promoDate)
+            cacheIfNecessary(promoDate: promoDate)
             return cachedPromoItems
         }
         
-        private func cachePromoItems(promoDate: Date) {
+        private func cacheIfNecessary(promoDate: Date) {
 
             // if there's a cachedDate and it maches the one being asked for then we're good
             if let cachedDate = cachedPromoDate, promoDate == cachedDate {
