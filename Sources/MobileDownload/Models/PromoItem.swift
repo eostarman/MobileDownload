@@ -92,12 +92,12 @@ public class PromoItem: Codable {
         Double(promoRate) / 10000 // 4 decimal percentage - return 3.5% as 3.5000
     }
 
-    public func getAmountOff(currency: Currency) -> Money {
-        Money(scaledAmount: promoRate, numberOfDecimals: 4, currency: currency) // 4 decimal percentage
+    public func getAmountOff() -> MoneyWithoutCurrency {
+        MoneyWithoutCurrency(scaledAmount: promoRate, numberOfDecimals: 4) // 4 decimal percentage
     }
 
-    public func getPromoPrice(currency: Currency) -> Money {
-        Money(scaledAmount: promoRate, numberOfDecimals: 4, currency: currency) // 4 decimal percentage
+    public func getPromoPrice() -> MoneyWithoutCurrency {
+        MoneyWithoutCurrency(scaledAmount: promoRate, numberOfDecimals: 4) // 4 decimal percentage
     }
 
 }
