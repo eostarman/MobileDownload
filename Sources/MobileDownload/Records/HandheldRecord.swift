@@ -231,4 +231,8 @@ extension HandheldRecord {
 
 extension HandheldRecord {
     public var isAlliance: Bool { rutherfordDatabaseNumber == "MI-1069-3034" }
+    
+    public var defaultCurrency: Currency {
+        Currency(currencyNid: defaultCurrencyNid) ?? .USD
+    }
 }
