@@ -7,8 +7,8 @@ public final class SplitCaseChargeRecord: Record, Codable {
     public var recKey: String = ""
     public var recName: String = ""
 
-    public var amount: MoneyWithoutCurrency = .init(scaledAmount: 0, numberOfDecimals: 0)
-    public var productSetNid: Int = 0
+    public var amount: MoneyWithoutCurrency = .zero
+    public var productSetNid: Int?                          // may be (nil)
     public var isPerAltPackCharge: Bool = false
     public var cutoffPrice: MoneyWithoutCurrency?
     public var effectiveDate: Date?
