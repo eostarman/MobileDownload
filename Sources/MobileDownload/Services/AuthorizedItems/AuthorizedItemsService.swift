@@ -47,6 +47,10 @@ public class AuthorizedItemsService {
         liquorLicenseService = LiquorLicenseService(cusNid: cusNid)
         permitService = PermitService(cusNid: cusNid)
     }
+    
+    public func isAuthorized(itemNid: Int) -> Bool {
+        getAuthorizedItemStatus(itemNid: itemNid) == .OK
+    }
 
     public func getAuthorizedItemStatus(itemNid: Int) -> AuthorizedItemStatus {
         if !customer.activeFlag {
