@@ -6,15 +6,14 @@ import MoneyAndExchangeRates
 extension Money {
     
     public func converted(to currency: Currency) -> Money? {
-        self.currency == currency ? self : mobileDownload.exchange(self, to: currency)
+        self.currency == currency ? self : mobileDownload.exchange(self, to: currency, numberOfDecimals: currency.numberOfDecimals)
     }
     
-    public func converted(to currency: Currency, withDecimals numberofDecimals: Int) -> Money? {
-        guard let result = self.currency == currency ? self : mobileDownload.exchange(self, to: currency) else {
+    public func converted(to currency: Currency, numberofDecimals: Int) -> Money? {
+        guard let result = self.currency == currency ? self : mobileDownload.exchange(self, to: currency, numberOfDecimals: numberofDecimals) else {
             return nil
         }
         
-        let roundedResult = result.withDecimals(numberOfDecimals)
-        return roundedResult        
+        return result
     }
 }

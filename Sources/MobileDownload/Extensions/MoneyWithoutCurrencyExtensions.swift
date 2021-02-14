@@ -10,14 +10,14 @@ import MoneyAndExchangeRates
 
 extension MoneyWithoutCurrency {
 
-    public func converted(to currency: Currency, withDecimals numberofDecimals: Int, from fromCurrency: Currency) -> MoneyWithoutCurrency? {
+    public func converted(to currency: Currency, numberOfDecimals: Int, from fromCurrency: Currency) -> MoneyWithoutCurrency? {
         if fromCurrency == currency {
             return self
         }
         
         let money = self.withCurrency(fromCurrency)
         
-        guard let result =  mobileDownload.exchange(money, to: currency) else {
+        guard let result =  mobileDownload.exchange(money, to: currency, numberOfDecimals: numberOfDecimals) else {
             return nil
         }
         

@@ -25,7 +25,7 @@ public class MobileOrder: Identifiable, Codable {
     public var deliveryChargeNid: Int?
     public var isAutoDeliveryCharge: Bool = true
     public var isEarlyPay: Bool = false
-    public var earlyPayDiscountAmt: MoneyWithoutCurrency = .zero
+    public var earlyPayDiscountAmt: MoneyWithoutCurrency?
     public var termDiscountDays: Int?
     public var termDiscountPct: Int?
     public var heldStatus: Bool = false
@@ -94,8 +94,8 @@ public class MobileOrder: Identifiable, Codable {
     public var coopCusNid: Int?
     public var doNotOptimizePalletsWithLayerRounding: Bool = false
     public var returnsValidated: Bool = false
-    public var POAAmount: MoneyWithoutCurrency = .zero
-    public var POAExpected: MoneyWithoutCurrency = .zero
+    public var POAAmount: MoneyWithoutCurrency?
+    public var POAExpected: MoneyWithoutCurrency?
     public var includeChargeOrderInTotalDue: Bool = false
     public var deliverySequence: Int?
     public var orderDEXStatus: eOrderDEXStatus?
@@ -122,8 +122,8 @@ public class MobileOrder: Identifiable, Codable {
     public var skipReason: String?
     public var voidReason: String?
     public var offInvoiceDiscPct: Int?
-    public var discountAmt: MoneyWithoutCurrency = .zero
-    public var totalFreight: MoneyWithoutCurrency = .zero
+    public var discountAmt: MoneyWithoutCurrency?
+    public var totalFreight: MoneyWithoutCurrency?
     public var isExistingOrder: Bool = false
     public var printedReviewInvoice: Bool = false
     public var voidReasonNid: Int?
@@ -135,16 +135,16 @@ public class MobileOrder: Identifiable, Codable {
     public var orderNumbersForPartitioner: [Int] = []
     public var deliveryInfos: [DeliveryInfoForPartitioning] = []
 
-    public var salesTax: MoneyWithoutCurrency = .zero
-    public var salesTaxState: MoneyWithoutCurrency = .zero
-    public var salesTaxStateB: MoneyWithoutCurrency = .zero
-    public var salesTaxStateC: MoneyWithoutCurrency = .zero
-    public var salesTaxCounty: MoneyWithoutCurrency = .zero
-    public var salesTaxCity: MoneyWithoutCurrency = .zero
-    public var salesTaxLocal: MoneyWithoutCurrency = .zero
-    public var salesTaxWholesale: MoneyWithoutCurrency = .zero
-    public var VAT: MoneyWithoutCurrency = .zero
-    public var levy: MoneyWithoutCurrency = .zero
+    public var salesTax: MoneyWithoutCurrency?
+    public var salesTaxState: MoneyWithoutCurrency?
+    public var salesTaxStateB: MoneyWithoutCurrency?
+    public var salesTaxStateC: MoneyWithoutCurrency?
+    public var salesTaxCounty: MoneyWithoutCurrency?
+    public var salesTaxCity: MoneyWithoutCurrency?
+    public var salesTaxLocal: MoneyWithoutCurrency?
+    public var salesTaxWholesale: MoneyWithoutCurrency?
+    public var VAT: MoneyWithoutCurrency?
+    public var levy: MoneyWithoutCurrency?
 
     public var lines: [MobileOrderLine] = []
 }

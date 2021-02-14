@@ -13,12 +13,12 @@ extension MobileDownload {
     /// - Parameters:
     ///   - amount: the amount with a currency
     ///   - currency: the required currency
-    public func exchange(_ amount: Money, to currency: Currency) -> Money? {
+    public func exchange(_ amount: Money, to currency: Currency, numberOfDecimals: Int) -> Money? {
         if amount.currency == currency {
             return amount
         }
         
-        guard let convertedPrice = handheld.exchangeRates.getMoney(from: amount, to: currency, date: .distantFuture) else {
+        guard let convertedPrice = handheld.exchangeRates.getMoney(from: amount, to: currency, date: .distantFuture, numberOfDecimals: numberOfDecimals) else {
             return nil
         }
         
