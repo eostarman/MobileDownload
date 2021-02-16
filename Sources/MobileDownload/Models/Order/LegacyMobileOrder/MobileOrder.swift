@@ -32,7 +32,9 @@ public class MobileOrder: Identifiable, Codable {
     public var isVoided: Bool = false
     public var deliveredStatus: Bool = false
     public var orderType: eOrderType?
-    public var isNewOrder: Bool = false
+    public var isNewOrder: Bool {
+        orderType == MobileOrder.eOrderType.FreshOfftruckOrder || orderType == MobileOrder.eOrderType.FreshPresellOrder        
+    }
     public var isHotShot: Bool = false
     public var numberSummarized: Int?
     public var summaryOrderNumber: Int?
@@ -127,7 +129,6 @@ public class MobileOrder: Identifiable, Codable {
     public var isExistingOrder: Bool = false
     public var printedReviewInvoice: Bool = false
     public var voidReasonNid: Int?
-    public var isPresell: Bool = false
     public var entryTime: Date?
     public var deliveredByHandheld: Bool = false
     public var isOffTruck: Bool = false
@@ -147,4 +148,6 @@ public class MobileOrder: Identifiable, Codable {
     public var levy: MoneyWithoutCurrency?
 
     public var lines: [MobileOrderLine] = []
+    
+    public var isPresell: Bool { orderType == .FreshPresellOrder }
 }

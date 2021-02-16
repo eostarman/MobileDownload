@@ -6,7 +6,7 @@
 //
 
 extension MobileOrder {
-    public enum eOrderType: Int, Codable {
+    public enum eOrderType: Int, Codable, CaseIterable {
         case FreshPresellOrder = 0
         case FreshOfftruckOrder = 1
         case DeliveryOfDownloadedOrder = 2

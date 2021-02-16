@@ -6,7 +6,7 @@
 //
 
 extension MobileOrder {
-    public enum eOrderDEXStatus: Int, Codable {
+    public enum eOrderDEXStatus: Int, Codable, CaseIterable {
         case NotApplicable = 0
         case NotTransmitted = 1
         case Failed = 2

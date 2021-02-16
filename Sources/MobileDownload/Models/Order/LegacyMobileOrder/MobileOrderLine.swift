@@ -8,6 +8,14 @@
 import Foundation
 import MoneyAndExchangeRates
 
+// obsolete fields:
+//
+//public var retailPrice: MoneyWithoutCurrency?
+//public var editedRetailPrice: Bool = false
+//public var buildTo: Int?
+//public var count: Decimal?
+//public var routeBookBuildTo: Decimal?
+
 /// A single line on an order (legacy) used while extracting the orders downloaded for delivery by a driver
 public class MobileOrderLine: Identifiable, Codable {
     public var id = UUID()
@@ -51,11 +59,6 @@ public class MobileOrderLine: Identifiable, Codable {
     public var originalItemWriteoffNid: Int?
     public var uniqueifier: Int?
     public var wasDownloaded: Bool = false
-    //public var retailPrice: MoneyWithoutCurrency?
-    //public var editedRetailPrice: Bool = false
-    //public var buildTo: Int?
-    //public var count: Decimal?
-    //public var routeBookBuildTo: Decimal?
     public var pickAndShipDateCodes: String?
     public var dateCode: Date?
     public var parentSlsEmpNid: Int?
@@ -81,9 +84,9 @@ public class MobileOrderLine: Identifiable, Codable {
     public var unitCRV: MoneyWithoutCurrency = .zero
     public var seq: Int = 0
     
-    //TODO - hook these up to parser
-    public var rebateAmount: MoneyWithoutCurrency = .zero
-    public var isManualRebate: Bool = false
+    // the mobile app does nothing with rebates
+    // public var rebateAmount: MoneyWithoutCurrency = .zero
+    // public var isManualRebate: Bool = false
 }
 
 extension MobileOrderLine {
