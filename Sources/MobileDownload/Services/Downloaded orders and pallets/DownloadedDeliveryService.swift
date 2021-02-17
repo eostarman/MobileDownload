@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import MobileLegacyOrder
 
 public class DownloadedDeliveryService {
     private lazy var deliveriesInSequence: [MobileOrder] = mobileDownload.deliveries.getAll().map { $0.order }

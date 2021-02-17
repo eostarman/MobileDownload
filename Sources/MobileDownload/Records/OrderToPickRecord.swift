@@ -1,3 +1,5 @@
+import MobileLegacyOrder
+
 public final class OrderToPickRecord: Record, Codable {
     public var id: Int { recNid }
     public var recNid: Int = 0
