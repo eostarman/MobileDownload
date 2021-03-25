@@ -34,7 +34,7 @@ public final class Records<T: Record> {
         return record
     }
 
-    public func getByRecKeyOrNil(_ recKey: String) -> T? {
+    public subscript(_ recKey: String) -> T? {
         if _recNidsByRecKey == nil {
             _recNidsByRecKey = Dictionary(uniqueKeysWithValues: getAll().map { ($0.recKey, $0.recNid) })
         }

@@ -17,7 +17,7 @@ public struct StateAlcoholLicenseComplianceService {
     init(cusNid: Int) {
         let customer = mobileDownload.customers[cusNid]
 
-        guard let state = mobileDownload.states.getByRecKeyOrNil(customer.shipState) else {
+        guard let state = mobileDownload.states[customer.shipState] else {
             return
         }
 
