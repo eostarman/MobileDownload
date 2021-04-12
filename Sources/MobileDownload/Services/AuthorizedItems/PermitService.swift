@@ -29,7 +29,7 @@ public struct PermitService {
 
         for permit in mobileDownload.permits.getAll() {
             if permitAppliesToItem(permitNid: permit.recNid, altPackFamilyNid: altPackFamilyNid) {
-                permitNids.append(altPackFamilyNid)
+                permitNids.append(permit.recNid)
             }
         }
 
