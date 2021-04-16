@@ -6,7 +6,7 @@ public final class OrderToPickRecord: Record, Codable {
     public var recKey: String = ""
     public var recName: String = ""
 
-    public var order = MobileOrder()
+    public var order = LegacyOrder()
 
     public init() {}
 }

@@ -9,12 +9,12 @@ import Foundation
 import MobileLegacyOrder
 
 public class DownloadedDeliveryService {
-    private lazy var deliveriesInSequence: [MobileOrder] = mobileDownload.deliveries.getAll().map { $0.order }
+    private lazy var deliveriesInSequence: [LegacyOrder] = mobileDownload.deliveries.getAll().map { $0.order }
         .sorted(by: { $0.deliverySequence ?? 0 < $1.deliverySequence ?? 0 })
 
     public init() { }
     
-    public func getDownloadedDeliveries() -> [MobileOrder] {
+    public func getDownloadedDeliveries() -> [LegacyOrder] {
         return deliveriesInSequence
     }
 
@@ -30,7 +30,7 @@ public class DownloadedDeliveryService {
         return customers
     }
 
-    public func getDeliveriesForCustomer(cusNid: Int) -> [MobileOrder] {
+    public func getDeliveriesForCustomer(cusNid: Int) -> [LegacyOrder] {
         let deliveries = deliveriesInSequence.filter { $0.toCusNid == cusNid }
         return deliveries
     }
