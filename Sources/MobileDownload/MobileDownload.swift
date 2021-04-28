@@ -33,6 +33,7 @@ public final class MobileDownload {
     public var arInfoRecords: [Int: [ArInfoRecord]] = [:]
     public var tapHandles = TapHandles()
     public var lastTruckInspection: LastTruckInspection?
+    public var customerRetailPlanograms: [CustomerRetailPlanogram] = []
 
     public var actionItemTypes: Records<ActionItemTypeRecord> = .init()
     public var actionItems: Records<ActionItemRecord> = .init()
