@@ -15,6 +15,8 @@ public final class Records<T: Record> {
 
     private var _allRecordsSorted: [T]?
     private var _recNidsByRecKey: [String: Int]?
+    
+    private var mockRecNid = 0
 
     init() {
         recordsByRecNid = [:]
@@ -32,6 +34,34 @@ public final class Records<T: Record> {
         _recNidsByRecKey = nil
 
         return record
+    }
+    
+    private func getMockRecNid() -> Int {
+        while true {
+            mockRecNid += 1
+            
+            if recordsByRecNid[mockRecNid] != nil {
+                continue
+            }
+            
+            // use the brute-force search so we don't create any lazy dictionaries
+            if recordsByRecNid.values.contains(where: { $0.recKey == String(mockRecNid) }) {
+                continue
+            }
+            
+            return mockRecNid
+        }
+    }
+    
+    /// add a new record for mocking up data for UI testing
+    public func addMock(recName: String) -> T {
+        let recNid = getMockRecNid()
+        var record = T.init()
+        record.recNid = recNid
+        record.recKey = String(recNid)
+        record.recName = recName
+        
+        return add(record)
     }
 
     public subscript(_ recKey: String) -> T? {

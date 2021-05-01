@@ -10,7 +10,7 @@ public final class RetailPlanogramRecord: Record, Codable {
     public var addedByEmpNid: Int?
     public var addedTime: Date?
     public var description: String = ""
-    public var retailPlanogramVisualURL: String = ""
+    public var retailPlanogramVisualURL: String?
     public var readyToDeploy: Bool = false
     
     public var retailPlanogramLocations: [RetailPlanogramLocation] = []
@@ -18,7 +18,8 @@ public final class RetailPlanogramRecord: Record, Codable {
     public init() {}
 }
 
-public class RetailPlanogramLocation: Codable {
+public class RetailPlanogramLocation: Codable, Identifiable {
+
     public var retailerListTypeNid: Int = 0
     public var locationVisualURL: String?
     public var displaySequence: Int = 0
@@ -28,7 +29,8 @@ public class RetailPlanogramLocation: Codable {
 }
 
 
-public class RetailPlanogramItem: Codable {
+public class RetailPlanogramItem: Codable, Identifiable {
+
     public var itemNid: Int = 0
     public var displaySequence: Int = 0
     /// nil == leave the dbo.RetailerListItem.LocationPar alone (keep any existing value)
