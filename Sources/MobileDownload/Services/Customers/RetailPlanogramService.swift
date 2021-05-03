@@ -8,7 +8,7 @@
 import Foundation
 
 public struct RetailPlanogramService {
-    let customer: CustomerRecord
+    public let customer: CustomerRecord
     let effectiveDate: Date?
     private let customerPlanogram: CustomerRetailPlanogram? // this is what assigns (and schedules) a planogram to a customer
     public let planogram: RetailPlanogramRecord?
@@ -201,6 +201,24 @@ public struct RetailPlanogramService {
             .map({mobileDownload.items[$0]})
     }
     
+    public func getTotalPar(itemNid: Int) -> Double {
+        guard let locations = planogram?.retailPlanogramLocations else {
+            return 0
+        }
+        
+        var totalPar = 0.0
+        
+        for location in locations {
+            for item in location.retailPlanogramItems {
+                if item.itemNid == itemNid, let par = item.par {
+                    totalPar += par
+                }
+            }
+        }
+        
+        return totalPar
+    }
+    
     /// items no longer being sold by the customer
     public func getDeletedItems() -> [ItemRecord] {
         guard planogram != nil else {
@@ -255,5 +273,81 @@ public struct RetailPlanogramService {
     
     public func isNewLocation(_ planogramLocation: RetailPlanogramLocation) -> Bool {
         retailerLocation(for: planogramLocation) == nil
+    }
+    
+    /// the par levels by item in a particular location (shelf, cooler, ...)
+    private func getPriorParsByItem(planogramLocation: RetailPlanogramLocation) -> [Int: Double] {
+        guard let location = retailerLocation(for: planogramLocation) else {
+            return [:]
+        }
+        
+        var parsByItem: [Int:Double] = [:]
+        
+        for item in location.getAllItems() {
+            if let par = item.locationPar {
+                parsByItem[item.itemNid] = par
+            }
+        }
+        
+        return parsByItem
+    }
+    
+    public func getModifiedRetailerInfo() -> RetailerInfo {
+        
+        let retailerInfo = customer.retailerInfo
+        
+        return retailerInfo
+    }
+    
+    public func getRetailLocation(cusNid: Int, planogramLocation: RetailPlanogramLocation) -> RetailerList {
+        
+        let location = RetailerList()
+        
+        location.cusNid = cusNid
+        location.retailerListTypeNid = planogramLocation.retailerListTypeNid
+        location.displaySequence = planogramLocation.displaySequence
+        location.itemSelection = .AllItems
+        location.sectionBy = .NoSections
+        location.placementType = .NoPlacementInfo
+        location.aisleOrRegisterNumber = nil
+        location.isAlphabetical = false
+        location.isAutomatic = false
+        location.usesRetailerPacks = false
+        location.eraseWhenPostingToSQL = false
+        location.description = mobileDownload.retailerListTypes[planogramLocation.retailerListTypeNid].recName
+        
+        let section = RetailerList.Section()
+        section.cusNid = cusNid
+        section.retailerListTypeNid = planogramLocation.retailerListTypeNid
+        section.sectionNumber = 0
+        section.sectionBy = .NoSections
+        section.sectionRecNid = nil
+        section.manualSectionName = nil
+        
+        location.sections.append(section)
+        
+        let parsByItem = getPriorParsByItem(planogramLocation: planogramLocation)
+        
+        var itemDisplaySequence = 0
+        for planogramItem in planogramLocation.retailPlanogramItems {
+            let item = RetailerList.Item()
+            item.cusNid = cusNid
+            item.retailerListTypeNid = planogramLocation.retailerListTypeNid
+
+            item.itemNid = planogramItem.itemNid
+            item.sectionNumber = 0
+            item.displaySequence = itemDisplaySequence
+            itemDisplaySequence += 1
+            
+            if planogramItem.par == nil {
+                item.locationPar = parsByItem[item.itemNid]
+            } else {
+                item.locationPar = planogramItem.par
+            }
+            
+            section.items.append(item)
+        }
+        
+        return location
     }
 }

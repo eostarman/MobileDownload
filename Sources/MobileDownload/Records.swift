@@ -94,7 +94,13 @@ public final class Records<T: Record> {
 
         return getAll().filter { $0.recName.localizedCaseInsensitiveContains(recName) }
     }
+    
+    /// return 'true' if this recNid is actually downloaded
+    public func contains(recNid: Int) -> Bool {
+        recordsByRecNid[recNid] != nil
+    }
 
+    /// return the record, or a "fake" record when the record is not downloaded
     public subscript(_ recNid: Int) -> T {
         if let record = recordsByRecNid[recNid] {
             return record

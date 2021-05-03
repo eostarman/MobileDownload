@@ -36,7 +36,7 @@ public class RetailPlanogramItem: Codable, Identifiable {
     /// nil == leave the dbo.RetailerListItem.LocationPar alone (keep any existing value)
     /// Zero == reset the dbo.RetailerListItem.LocationPar to nil
     /// Anything else == set the dbo.RetailerListItem.LocationPar to that value
-    public var par: Decimal?
+    public var par: Double? // in c# this is Decimal
     
     public init() {}
 }

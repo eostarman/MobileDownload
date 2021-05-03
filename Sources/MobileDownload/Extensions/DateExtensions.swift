@@ -8,8 +8,8 @@
 import Foundation
 
 public extension Date {
-    private static let yyyyMMdd: DateFormatter = getDateFormatter(format: "yyyyMMdd") // 20200529
-    private static let yyyy_mm_dd: DateFormatter = getDateFormatter(format: "yyyy-MM-dd")
+    static let yyyyMMdd: DateFormatter = getDateFormatter(format: "yyyyMMdd") // 20200529
+    static let yyyy_mm_dd: DateFormatter = getDateFormatter(format: "yyyy-MM-dd")
 
     static let yyyy_MM_dd_T_HH_mm_ss: DateFormatter = getDateFormatter(format: "yyyy-MM-dd'T'HH:mm:ss") // 2020-05-29T20:05:45.3348731-04:00
     static let yyyyMMdd_HHmmss: DateFormatter = getDateFormatter(format: "yyyyMMdd:HHmmss") // 20200529:200545

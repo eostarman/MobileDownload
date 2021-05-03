@@ -9,8 +9,14 @@ import Foundation
 
 
 /// Information about the retailer (customer) regarding the locations (back-stock or consumer facing) at the retailer (and lists used during order entry for on-premise accounts mainly)
-public class RetailerInfo : Codable {
+public class RetailerInfo : Codable, CopyViaJSON {
+
     public var cusNid: Int = 0
+
+    public var retailLocations: [RetailerList] = []
+    public var backstockLocations: [RetailerList] = []
+    public var productLists: [RetailerList] = []
+    public var itemNotes: [RetailerList.ItemNote] = [] // small numeric notes indicating things to the preseller (like "code 99 means do not order")
 
     public init() { }
 
@@ -21,11 +27,6 @@ public class RetailerInfo : Codable {
     public var allRetailAndBackstockLocations: [RetailerList] {
         retailLocations + backstockLocations
     }
-
-    public var retailLocations: [RetailerList] = []
-    public var backstockLocations: [RetailerList] = []
-    public var productLists: [RetailerList] = []
-    public var itemNotes: [RetailerList.ItemNote] = [] // small numeric notes indicating things to the preseller (like "code 99 means do not order")
 
     lazy var byID: [Int: RetailerList] = Dictionary(uniqueKeysWithValues: allRetailAndBackstockLocations.map { ($0.id, $0) })
 
@@ -195,9 +196,7 @@ public class RetailerList: Identifiable, Codable {
         public var sectionNumber = 0
         public var displaySequence: Int = 0
 
-        public var locationPar: Double? // 999v99
-
-        public var qtyCounted: Int? {
+        public var locationPar: Double? { // 999v99
             willSet {
                 objectWillChange.send()
             }
