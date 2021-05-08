@@ -21,6 +21,11 @@ public final class MobileDownload {
     public var isValid: Bool {
         databaseName != nil
     }
+    
+    /// the actual employee (not the "route")
+    public var loggedInEmpNid: Int {
+        handheld.actualEmpNid
+    }
 
     public var header = Header()
     public var handheld = HandheldRecord()

@@ -46,11 +46,11 @@ public struct RetailPlanogramService {
         itemsInRetailLocations = Set(customer.retailerInfo.retailLocations.flatMap({location in location.getAllItems().map({$0.itemNid})}))
         itemsInPlanogram = Set(planogram.retailPlanogramLocations.flatMap({location in location.retailPlanogramItems.map({$0.itemNid})}))
         
-        print("itemsInRetailLocations=\(itemsInRetailLocations)")
-        print("itemsInPlanogram=\(itemsInPlanogram)")
-        
-        print("CUSTOMER=\(Self.getItemNids(customer))")
-        print("PLANOGRAM=\(Self.getItemNids(planogram))")
+//        print("itemsInRetailLocations=\(itemsInRetailLocations)")
+//        print("itemsInPlanogram=\(itemsInPlanogram)")
+//
+//        print("CUSTOMER=\(Self.getItemNids(customer))")
+//        print("PLANOGRAM=\(Self.getItemNids(planogram))")
     }
     
     private static func getItemNids(_ customer: CustomerRecord) -> [Int] {
@@ -299,7 +299,8 @@ public struct RetailPlanogramService {
         return retailerInfo
     }
     
-    public func getRetailLocation(cusNid: Int, planogramLocation: RetailPlanogramLocation) -> RetailerList {
+    public func getRetailLocation(planogramLocation: RetailPlanogramLocation) -> RetailerList {
+        let cusNid = customer.recNid
         
         let location = RetailerList()
         
