@@ -83,7 +83,7 @@ public final class CustomerRecord: Record, Codable {
     public var priceRuleNids: [Int] = []
     public var shipLatitude: Double?
     public var shipLongitude: Double?
-    public var retailDateCodesBlob: String = ""
+    public var retailDateCodes: [ItemRetailDatecode] = []
     public var iDORtaxableSalesPrev: Int = 0
     public var territoryNid: Int?
     public var ediPartnerNid: Int?

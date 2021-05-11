@@ -8,6 +8,7 @@
 import Foundation
 
 public final class Records<T: Record> {
+    let recordSet: RecordSet
     private var recordsByRecNid: [Int: T]
 
     public var count: Int { recordsByRecNid.count }
@@ -18,11 +19,13 @@ public final class Records<T: Record> {
     
     private var mockRecNid = 0
 
-    init() {
+    init(_ recordSet: RecordSet) {
+        self.recordSet = recordSet
         recordsByRecNid = [:]
     }
 
-    public init(_ records: [T]) {
+    public init(_ recordSet: RecordSet, _ records: [T]) {
+        self.recordSet = recordSet
         recordsByRecNid = Dictionary(uniqueKeysWithValues: records.map { ($0.recNid, $0) })
     }
 
@@ -109,8 +112,12 @@ public final class Records<T: Record> {
         var missing = T()
         missing.recNid = recNid
         missing.recKey = "#\(recNid)#"
-        missing.recName = "Not downloaded"
-        print("ERROR: RECNID \(recNid) is not downloaded")
+        if recNid == 0 {
+            missing.recName = "No \(recordSet.singularCaption)"
+        } else {
+            missing.recName = "\(recordSet.singularCaption) not downloaded"
+        }
+        print("ERROR: \(recordSet.singularCaption)) #\(recNid)# is not downloaded")
         return missing
     }
 
