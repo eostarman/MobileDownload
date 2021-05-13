@@ -117,7 +117,7 @@ public final class Records<T: Record> {
         } else {
             missing.recName = "\(recordSet.singularCaption) not downloaded"
         }
-        print("ERROR: \(recordSet.singularCaption)) #\(recNid)# is not downloaded")
+        print("ERROR: \(recordSet.singularCaption) #\(recNid)# is not downloaded")
         return missing
     }
 
