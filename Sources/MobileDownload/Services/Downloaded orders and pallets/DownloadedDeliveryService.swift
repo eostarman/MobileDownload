@@ -36,7 +36,7 @@ public class DownloadedDeliveryService {
     }
 
     public func getOrderNumbersForCustomer(cusNid: Int) -> [Int] {
-        let orderNumbers = deliveriesInSequence.filter { $0.toCusNid == cusNid }.map { $0.orderNumber }.unique()
+        let orderNumbers = deliveriesInSequence.filter { $0.toCusNid == cusNid }.map { $0.orderNumber ?? 0 }.unique() // I'm not expecting a download-delivery to be missing an order number, but ...
         return orderNumbers
     }
 }
