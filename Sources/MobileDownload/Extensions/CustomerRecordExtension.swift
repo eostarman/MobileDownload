@@ -20,4 +20,14 @@ extension CustomerRecord {
             return nil
         }
     }
+    
+    /// use this to allow voice command for customer names displayed on (e.g.) buttons - this returns the first couple of words from the name
+    public var accessibilityLabel: String {
+        recName
+            .components(separatedBy: " ")
+            .map({$0.trimmingCharacters(in: [" ", "#", ",", "-"])})
+            .filter({!$0.isEmpty})
+            .prefix(2)
+            .joined(separator: " ")
+    }
 }
