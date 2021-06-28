@@ -358,7 +358,11 @@ public struct DateCodeService {
     }
 
     public func getDescription() -> String {
-        let x = "\(labelFormat)"
+        guard let pattern = patterns.first else {
+            return "no date code"
+        }
+        
+        let x = pattern.replacingOccurrences(of: "_", with: " ")
         return x
     }
 

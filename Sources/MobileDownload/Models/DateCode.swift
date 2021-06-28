@@ -87,5 +87,8 @@ public struct DateCode: Equatable {
         self.second = second
 
     }
-
+    
+    public var dateComponents: DateComponents {
+        return DateComponents(year: year, month: month, day: day, hour: hour, minute: minute, second: second)
+    }
 }
