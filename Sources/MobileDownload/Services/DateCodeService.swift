@@ -209,7 +209,7 @@ public struct DateCodeService {
             patterns = ["MMddyy"]
 
         case .Tsingtao:
-            patterns = ["XXXMMddyyyy/hh:mm", "MMddyyyy/hh:mm", "MMddyyyy", "XXXMMddyyyy"]
+            patterns = ["XXXMMddyyyy/hh:mm", "MMddyyyy/hh:mm", "MMddyyyy", "XXXMMddyyyy", "MMddyy"]
             strictLength = true
 
         case .Mddyy_Skip_I:
@@ -251,16 +251,16 @@ public struct DateCodeService {
             patterns = ["yyddd"]
 
         case .MMMddyy:
-            patterns = ["MMMddyy"]
+            patterns = ["MMMddyy", "MMddyy"]
 
         case .dddyy:
             patterns = ["dddyy"]
 
         case .ddMMMyy:
-            patterns = ["ddMMMyy"]
+            patterns = ["ddMMMyy", "ddMMyy"]
 
         case .ddMMMyyyy:
-            patterns = ["ddMMMyyyy"]
+            patterns = ["ddMMMyyyy", "ddMMyyyy"]
 
         case .ddMMy_Letter_Year_X_2013:
             patterns = ["ddMMy"]
@@ -278,7 +278,7 @@ public struct DateCodeService {
             patterns = ["MMddyyyy"]
 
         case .MMMddyyyy:
-            patterns = ["MMMddyyyy"]
+            patterns = ["MMMddyyyy", "MMddyyyy"]
 
         case .MMyy:
             patterns = ["MMyy"]
@@ -300,7 +300,7 @@ public struct DateCodeService {
             monthMap = monthMapSkippingIJ
 
         case .MMMdd:
-            patterns = ["MMMdd"]
+            patterns = ["MMMdd", "MMdd"]
 
         case .MMyyyydd:
             patterns = ["MMyyyydd"]
@@ -313,7 +313,7 @@ public struct DateCodeService {
             monthMap = monthMapContiguous
 
         case .MMMyy:
-            patterns = ["MMMyy"]
+            patterns = ["MMMyy", "MMyy"]
 
         case .ddd:
             patterns = ["ddd"]
@@ -342,7 +342,7 @@ public struct DateCodeService {
             monthMap = monthMapContiguous
 
         case .MMMyyyy:
-            patterns = ["MMMyyyy"]
+            patterns = ["MMMyyyy", "MMyyyy"]
 
         case .yyddd_Letter_Year:
             patterns = ["yyddd"]
@@ -355,6 +355,10 @@ public struct DateCodeService {
         case .ddMMyyyy:
             patterns = ["ddMMyyyy"]
         }
+    }
+    
+    public var hasDateCode: Bool {
+        !patterns.isEmpty
     }
 
     public func getDescription() -> String {
