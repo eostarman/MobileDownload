@@ -207,6 +207,7 @@ public struct DateCodeService {
 
         case .MMddyy:
             patterns = ["MMddyy"]
+            patterns = ["MMddyy", "ddMMyy"] //TODO: remove this - it's for testing the entry of a date code that's ambiguous
 
         case .Tsingtao:
             patterns = ["XXXMMddyyyy/hh:mm", "MMddyyyy/hh:mm", "MMddyyyy", "XXXMMddyyyy", "MMddyy"]
@@ -362,22 +363,30 @@ public struct DateCodeService {
     }
 
     public func getDescription() -> String {
-        guard let pattern = patterns.first else {
+        if patterns.isEmpty {
             return "no date code"
         }
         
-        let x = pattern.replacingOccurrences(of: "_", with: " ")
-        return x
+        var formats: [String] = []
+        
+        for pattern in patterns {
+            formats.append(pattern.replacingOccurrences(of: "_", with: " "))
+        }
+        
+        // https://developer.apple.com/documentation/foundation/listformatstyle
+        return formats.formatted(.list(type: .or, width: .standard)) // return "MMDDYY or YYMMDD" for example
     }
 
-    public func getDateCode(_ textString: String) -> DateCode? {
+    public func getDateCode(_ textString: String) -> [DateCode] {
+        var dateCodes: [DateCode] = []
+        
         for pattern in patterns {
             if let dateCode = getDateCode(pattern: pattern, text: textString) {
-                return dateCode
+                dateCodes.append(dateCode)
             }
         }
 
-        return nil
+        return dateCodes
     }
 
     private func getDateCode(pattern: String, text textString: String) -> DateCode? {
@@ -471,7 +480,7 @@ public struct DateCodeService {
             day = Calendar.current.component(.day, from: date)
         }
 
-        let dateCode = DateCode(labelFormat: labelFormat, dateCodeIsSellByDate: dateCodeIsSellByDate, year: year, month: month, day: day, hour: hour, minute: minute, second: second)
+        let dateCode = DateCode(labelFormat: labelFormat, pattern: pattern, dateCodeIsSellByDate: dateCodeIsSellByDate, year: year, month: month, day: day, hour: hour, minute: minute, second: second)
 
         return dateCode
     }

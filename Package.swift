@@ -18,7 +18,14 @@ let package = Package(
     targets: [
         .target(
             name: "MobileDownload",
-            dependencies: ["MoneyAndExchangeRates", "MobileLegacyOrder"]),
+            dependencies: ["MoneyAndExchangeRates", "MobileLegacyOrder"],
+            swiftSettings: [
+                .unsafeFlags([           // https://theswiftdev.com/introduction-to-asyncawait-in-swift/
+                    "-parse-as-library",
+                    "-Xfrontend", "-disable-availability-checking",
+                    "-Xfrontend", "-enable-experimental-concurrency",
+                             ])
+            ]),
         .testTarget(
             name: "MobileDownloadTests",
             dependencies: ["MobileDownload", "MoneyAndExchangeRates", "MobileLegacyOrder"]),

@@ -68,6 +68,7 @@ public enum eDateCodeLabelFormat: Int, Codable {
 
 public struct DateCode: Equatable {
     public let labelFormat: eDateCodeLabelFormat
+    public let pattern: String
     public let dateCodeIsSellByDate: Bool
     public let year: Int?
     public let month: Int?
@@ -76,8 +77,9 @@ public struct DateCode: Equatable {
     public let minute: Int?
     public let second: Int?
 
-    public init(labelFormat: eDateCodeLabelFormat, dateCodeIsSellByDate: Bool, year: Int?, month: Int?, day: Int?, hour: Int?, minute: Int?, second: Int?) {
+    public init(labelFormat: eDateCodeLabelFormat, pattern: String, dateCodeIsSellByDate: Bool, year: Int?, month: Int?, day: Int?, hour: Int?, minute: Int?, second: Int?) {
         self.labelFormat = labelFormat
+        self.pattern = pattern
         self.dateCodeIsSellByDate = dateCodeIsSellByDate
         self.year = year
         self.month = month
@@ -90,5 +92,9 @@ public struct DateCode: Equatable {
     
     public var dateComponents: DateComponents {
         return DateComponents(year: year, month: month, day: day, hour: hour, minute: minute, second: second)
+    }
+    
+    public var date: Date? {
+        Calendar.current.date(from: dateComponents)
     }
 }
