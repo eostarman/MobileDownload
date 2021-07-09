@@ -134,7 +134,7 @@ public struct DateCodeService {
     private func getYearFromSpecialLetter(startingYearLetter: Character, startingYearForLetter: Int, yearLetter: Character) -> Int? {
         func getLetterOffset(letter: Character) -> Int? {
             guard let a = Character("A").asciiValue, let x = Character(letter.uppercased()).asciiValue else { return nil }
-            let offset = Int(x - a)
+            let offset = Int(x) - Int(a) // need to convert from UInt8 or we can get an overflow error
             return offset
         }
 
@@ -206,7 +206,7 @@ public struct DateCodeService {
             strictLength = true
 
         case .MMddyy:
-            patterns = ["MMddyy"]
+            //patterns = ["MMddyy"]
             patterns = ["MMddyy", "ddMMyy"] //TODO: remove this - it's for testing the entry of a date code that's ambiguous
 
         case .Tsingtao:
